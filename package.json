@@ -1,0 +1,7 @@
+{
+  "name": "first-nodejs-server",
+  "scripts": {
+    "start": "node app.js",
+    "postinstall": "npm start"
+  }
+}
