@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const {body, validationResult} = require('express-validator');
 
 const app = express();
 const PORT = 3000;
@@ -8,31 +9,25 @@ app.use(bodyParser.json());
 
 const users = [];
 
-app.post('/register', (req, res) => {
+app.post('/register', 
+[
+  body('firstName').notEmpty().withMessage('First name is required.'),
+  body('lastName').notEmpty().withMessage('Last name is required.'),
+  body('email').isEmail().withMessage('Invalid email address.'),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long.'),
+],
+(req, res) => {
   const {firstName, lastName, email, password} = req.body;
-  const errors = {};
+  const errors = validationResult(req);
   
-  if (!firstName) {
-    errors.firstName = 'First name is required.';
+  if(!errors.isEmpty()) {
+    return res.status(400).json({errors:errors.array()})
   }
-  if (!lastName) {
-    errors.lastName = 'Last name is required.';
+  
+  if (users.find(user => user.email === email)) {
+    return res.status(400).json({ message: 'Email is already exists.' });
   }
-  if (!email) {
-    errors.email = 'Email is required.';
-  }
-  if (!password) {
-    errors.password = 'Password is required.';
-  }
-
-  if (Object.keys(errors).length > 0) {
-    return res.status(400).json({ errors });
-  }
-
-  if (users.find(user => user.email === email) && !errors) {
-    return res.status(400).json({ message: 'Email is already registered.'});
-  }
-
+  
   const newUser = {
     firstName,
     lastName,
@@ -46,7 +41,7 @@ app.post('/register', (req, res) => {
 })
 
 app.get('/users', (req, res) => {
-  res.end(200).json(users);
+  res.status(200).json(users);
 });
 
 app.listen(PORT, () => {

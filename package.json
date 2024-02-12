@@ -3,5 +3,8 @@
   "scripts": {
     "start": "node app.js",
     "postinstall": "npm start"
+  },
+  "dependencies": {
+    "express-validator": "^7.0.1"
   }
 }
