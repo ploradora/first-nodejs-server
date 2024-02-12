@@ -10,13 +10,27 @@ const users = [];
 
 app.post('/register', (req, res) => {
   const {firstName, lastName, email, password} = req.body;
-
-  if (!firstName || !lastName || !email || !password) {
-    return res.status(400).json({ message: 'Please provide all required fields.' });
+  const errors = {};
+  
+  if (!firstName) {
+    errors.firstName = 'First name is required.';
+  }
+  if (!lastName) {
+    errors.lastName = 'Last name is required.';
+  }
+  if (!email) {
+    errors.email = 'Email is required.';
+  }
+  if (!password) {
+    errors.password = 'Password is required.';
   }
 
-  if (users.find(user => user.email === email)) {
-    return res.status(400).json({ message: 'Email is already registered.' });
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json({ errors });
+  }
+
+  if (users.find(user => user.email === email) && !errors) {
+    return res.status(400).json({ message: 'Email is already registered.'});
   }
 
   const newUser = {
@@ -32,7 +46,7 @@ app.post('/register', (req, res) => {
 })
 
 app.get('/users', (req, res) => {
-  res.status(200).json(users);
+  res.end(200).json(users);
 });
 
 app.listen(PORT, () => {
