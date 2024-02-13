@@ -5,6 +5,7 @@
     "postinstall": "npm start"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express-validator": "^7.0.1"
   }
 }
