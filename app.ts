@@ -38,6 +38,7 @@ app.post('/register',
     return res.status(400).json({ errors: [{msg: 'Email already exists.'}] });
   }
 
+  
   try {
     
     const hashedPassword = await bcrypt.hash(password, 10);
