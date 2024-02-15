@@ -1,16 +1,25 @@
 {
-  "name": "first-nodejs-server",
-  "type": "module",
+  "name": "first-node-server",
   "scripts": {
-    "start": "node app.js",
-    "postinstall": "npm start"
+    "start": "ts-node app.ts",
+    "postinstall": "npm start",
+    "dev": "nodemon app.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.4",
+    "express": "^4.18.2",
     "express-validator": "^7.0.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
+    "nodemon": "^3.0.3",
     "typescript": "^5.3.3"
-  }
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "description": ""
 }

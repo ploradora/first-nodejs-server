@@ -1,12 +1,14 @@
-import { Request, Response } from 'express';
+import express, { Request, Response, Express } from 'express';
+import dotenv from 'dotenv';
 
-const express = require('express');
+dotenv.config();
+
 const bodyParser = require('body-parser');
 const {body, validationResult} = require('express-validator');
 const bcrypt = require('bcrypt');
 
-const app = express();
-const PORT = 3000;
+const app: Express = express();
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
@@ -38,9 +40,9 @@ app.post('/register',
     return res.status(400).json({ errors: [{msg: 'Email already exists.'}] });
   }
 
-  
+
   try {
-    
+     
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = {
       firstName,
@@ -81,6 +83,6 @@ app.get('/users', (req: Request, res: Response) => {
   res.status(200).json(users);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
